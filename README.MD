@@ -1,12 +1,47 @@
 # Capacity Workload Analysis
 
-Projeto de portfólio para análise de Capacity vs Workload em ambiente industrial.
+Portfolio project focused on Capacity vs Workload analysis in a manufacturing environment.
 
-## Objetivo
+## Project Goal
 
-Desenvolver uma solução analítica utilizando PostgreSQL e Power BI para analisar capacidade produtiva e carga de trabalho ao longo de um horizonte de 12 meses.
+Build an end-to-end analytical solution using PostgreSQL and Power BI to evaluate future manufacturing demand against available factory capacity over a 12-month planning horizon.
 
-## Tecnologias
+The project simulates a real-world capacity planning process commonly managed through spreadsheets and transforms it into a structured data and analytics solution.
+
+## Solution Overview
+
+The solution is divided into two layers:
+
+### Planning Engine
+
+Responsible for applying business rules and generating:
+
+- Monthly Workload
+- Monthly Capacity
+
+Main components:
+
+- Master Plan
+- Production Roster
+- Lead Time Rules
+- Routing Matrix
+
+### Analytics Layer
+
+Responsible for transforming planning outputs into a Star Schema optimized for Power BI reporting and analysis.
+
+## Key Features
+
+- Capacity vs Workload Analysis
+- Manned Capacity Calculation
+- Installed Capacity Calculation
+- Internal Start Date Calculation
+- Work Center Analysis
+- Bottleneck Identification
+- Project-Level Workload Traceability
+- Capacity Gap Analysis
+
+## Technology Stack
 
 - PostgreSQL
 - SQL
@@ -14,6 +49,34 @@ Desenvolver uma solução analítica utilizando PostgreSQL e Power BI para anali
 - Git
 - GitHub
 
-## Status
+## Project Structure
 
-Em desenvolvimento.
+```text
+docs/
+├── 01_business_problem.md
+├── 02_solution_overview.md
+├── 03_data_model.md
+├── 04_business_rules.md
+├── 05_kpis.md
+├── 06_development_log.md
+
+planning_engine.dbml
+```
+
+## Current Status
+
+✅ Business Problem Definition
+
+✅ Solution Architecture
+
+✅ Planning Engine Data Model
+
+✅ Business Rules Documentation
+
+⬜ PostgreSQL Physical Model
+
+⬜ Data Generation
+
+⬜ Analytics Layer (Star Schema)
+
+⬜ Power BI Dashboard
