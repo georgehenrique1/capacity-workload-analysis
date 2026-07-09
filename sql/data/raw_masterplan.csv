@@ -1,0 +1,91 @@
+project_number,project_name,combination_id,need_date,reference_month
+PRJ001,Expansion Unit A,1,2026-01-15,2026-01-01
+PRJ001,Expansion Unit A,2,2026-02-15,2026-01-01
+PRJ001,Expansion Unit A,3,2026-03-15,2026-01-01
+PRJ002,New Production Line,4,2026-01-31,2026-01-01
+PRJ002,New Production Line,5,2026-02-28,2026-01-01
+PRJ002,New Production Line,6,2026-03-31,2026-01-01
+PRJ003,Facility Upgrade,7,2026-02-10,2026-01-01
+PRJ003,Facility Upgrade,8,2026-03-10,2026-01-01
+PRJ003,Facility Upgrade,9,2026-04-10,2026-01-01
+PRJ004,Customer Project Alpha,1,2026-02-20,2026-01-01
+PRJ004,Customer Project Alpha,2,2026-03-20,2026-01-01
+PRJ004,Customer Project Alpha,3,2026-04-20,2026-01-01
+PRJ005,Customer Project Beta,4,2026-03-05,2026-01-01
+PRJ005,Customer Project Beta,5,2026-04-05,2026-01-01
+PRJ005,Customer Project Beta,6,2026-05-05,2026-01-01
+PRJ006,Automation Upgrade,7,2026-03-25,2026-01-01
+PRJ006,Automation Upgrade,8,2026-04-25,2026-01-01
+PRJ006,Automation Upgrade,9,2026-05-25,2026-01-01
+PRJ007,Capacity Expansion,1,2026-04-15,2026-01-01
+PRJ007,Capacity Expansion,2,2026-05-15,2026-01-01
+PRJ007,Capacity Expansion,3,2026-06-15,2026-01-01
+PRJ008,Industrial Revamp,4,2026-04-30,2026-01-01
+PRJ008,Industrial Revamp,5,2026-05-30,2026-01-01
+PRJ008,Industrial Revamp,6,2026-06-30,2026-01-01
+PRJ009,New Factory Module,7,2026-05-10,2026-01-01
+PRJ009,New Factory Module,8,2026-06-10,2026-01-01
+PRJ009,New Factory Module,9,2026-07-10,2026-01-01
+PRJ010,Strategic Investment,1,2026-05-20,2026-01-01
+PRJ010,Strategic Investment,2,2026-06-20,2026-01-01
+PRJ010,Strategic Investment,3,2026-07-20,2026-01-01
+PRJ011,Plant Modernization,4,2026-06-05,2026-01-01
+PRJ011,Plant Modernization,5,2026-07-05,2026-01-01
+PRJ011,Plant Modernization,6,2026-08-05,2026-01-01
+PRJ012,Warehouse Expansion,7,2026-06-25,2026-01-01
+PRJ012,Warehouse Expansion,8,2026-07-25,2026-01-01
+PRJ012,Warehouse Expansion,9,2026-08-25,2026-01-01
+PRJ013,Energy Optimization,1,2026-07-15,2026-01-01
+PRJ013,Energy Optimization,2,2026-08-15,2026-01-01
+PRJ013,Energy Optimization,3,2026-09-15,2026-01-01
+PRJ014,Assembly Line Upgrade,4,2026-07-31,2026-01-01
+PRJ014,Assembly Line Upgrade,5,2026-08-31,2026-01-01
+PRJ014,Assembly Line Upgrade,6,2026-09-30,2026-01-01
+PRJ015,Robotics Integration,7,2026-08-10,2026-01-01
+PRJ015,Robotics Integration,8,2026-09-10,2026-01-01
+PRJ015,Robotics Integration,9,2026-10-10,2026-01-01
+PRJ016,Customer Project Gamma,1,2026-08-20,2026-01-01
+PRJ016,Customer Project Gamma,2,2026-09-20,2026-01-01
+PRJ016,Customer Project Gamma,3,2026-10-20,2026-01-01
+PRJ017,Capacity Recovery,4,2026-09-05,2026-01-01
+PRJ017,Capacity Recovery,5,2026-10-05,2026-01-01
+PRJ017,Capacity Recovery,6,2026-11-05,2026-01-01
+PRJ018,Infrastructure Renewal,7,2026-09-25,2026-01-01
+PRJ018,Infrastructure Renewal,8,2026-10-25,2026-01-01
+PRJ018,Infrastructure Renewal,9,2026-11-25,2026-01-01
+PRJ019,Process Improvement,1,2026-10-15,2026-01-01
+PRJ019,Process Improvement,2,2026-11-15,2026-01-01
+PRJ019,Process Improvement,3,2026-12-15,2026-01-01
+PRJ020,Supply Chain Expansion,4,2026-10-31,2026-01-01
+PRJ020,Supply Chain Expansion,5,2026-11-30,2026-01-01
+PRJ020,Supply Chain Expansion,6,2026-12-31,2026-01-01
+PRJ021,New Product Launch,7,2026-01-20,2026-01-01
+PRJ021,New Product Launch,8,2026-02-20,2026-01-01
+PRJ021,New Product Launch,9,2026-03-20,2026-01-01
+PRJ022,Factory Consolidation,1,2026-02-05,2026-01-01
+PRJ022,Factory Consolidation,2,2026-03-05,2026-01-01
+PRJ022,Factory Consolidation,3,2026-04-05,2026-01-01
+PRJ023,Digital Transformation,4,2026-03-15,2026-01-01
+PRJ023,Digital Transformation,5,2026-04-15,2026-01-01
+PRJ023,Digital Transformation,6,2026-05-15,2026-01-01
+PRJ024,Lean Manufacturing Program,7,2026-04-25,2026-01-01
+PRJ024,Lean Manufacturing Program,8,2026-05-25,2026-01-01
+PRJ024,Lean Manufacturing Program,9,2026-06-25,2026-01-01
+PRJ025,Export Expansion,1,2026-05-10,2026-01-01
+PRJ025,Export Expansion,2,2026-06-10,2026-01-01
+PRJ025,Export Expansion,3,2026-07-10,2026-01-01
+PRJ026,Customer Project Delta,4,2026-06-20,2026-01-01
+PRJ026,Customer Project Delta,5,2026-07-20,2026-01-01
+PRJ026,Customer Project Delta,6,2026-08-20,2026-01-01
+PRJ027,Maintenance Program,7,2026-07-05,2026-01-01
+PRJ027,Maintenance Program,8,2026-08-05,2026-01-01
+PRJ027,Maintenance Program,9,2026-09-05,2026-01-01
+PRJ028,Packaging Upgrade,1,2026-08-15,2026-01-01
+PRJ028,Packaging Upgrade,2,2026-09-15,2026-01-01
+PRJ028,Packaging Upgrade,3,2026-10-15,2026-01-01
+PRJ029,Quality Improvement Initiative,4,2026-09-25,2026-01-01
+PRJ029,Quality Improvement Initiative,5,2026-10-25,2026-01-01
+PRJ029,Quality Improvement Initiative,6,2026-11-25,2026-01-01
+PRJ030,Future Growth Program,7,2026-10-10,2026-01-01
+PRJ030,Future Growth Program,8,2026-11-10,2026-01-01
+PRJ030,Future Growth Program,9,2026-12-10,2026-01-01
