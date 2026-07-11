@@ -2,59 +2,28 @@
 -- SNAPSHOT VIEWS
 -- ======================================================
 --
--- Returns the latest valid Master Plan and Roster
--- snapshots for each analysis month based on:
+-- Workload calculations always use the latest available
+-- Master Plan version.
+--
+-- Capacity calculations preserve historical workforce
+-- assumptions by selecting the latest valid Roster
+-- snapshot for each analysis month based on:
 --
 -- MAX(reference_month) <= analysis_month
 --
--- Ensures historical planning assumptions are preserved
--- in workload and capacity calculations.
+-- This approach evaluates future demand using the most
+-- recent forecast while maintaining historical capacity
+-- evolution throughout the planning horizon.
 -- ======================================================
-CREATE OR REPLACE VIEW vw_actual_masterplan AS
+CREATE OR REPLACE VIEW vw_latest_masterplan AS (
 
-WITH analysis_months AS (
-
-    SELECT DISTINCT
-
-        MAKE_DATE(
-            calendar_year,
-            calendar_month,
-            1
-        ) AS analysis_month
-
-    FROM dim_date
-
+	SELECT * FROM raw_masterplan
+WHERE reference_month = (
+	SELECT MAX(reference_month)
+	FROM raw_masterplan
 )
-
-SELECT
-
-    am.analysis_month,
-
-    mp.masterplan_id,
-
-    mp.project_number,
-
-    mp.project_name,
-
-    mp.combination_id,
-
-    mp.need_date,
-
-    mp.reference_month
-
-FROM analysis_months am
-
-INNER JOIN raw_masterplan mp
-
-    ON mp.reference_month = (
-
-        SELECT MAX(sub.reference_month)
-
-        FROM raw_masterplan sub
-
-        WHERE sub.reference_month <= am.analysis_month
-
-    );
+	
+);
 	
 CREATE OR REPLACE VIEW vw_actual_roster AS
 
