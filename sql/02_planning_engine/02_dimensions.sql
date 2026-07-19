@@ -151,6 +151,12 @@ CREATE TABLE IF NOT EXISTS dim_date (
 
     calendar_year INTEGER NOT NULL,
 
+    month_name TEXT NOT NULL,
+
+    month_year_name TEXT NOT NULL,
+
+    month_year_key INTEGER NOT NULL,
+
     is_workday BOOLEAN NOT NULL,
 
     is_holiday BOOLEAN NOT NULL
@@ -162,11 +168,23 @@ CREATE TABLE IF NOT EXISTS dim_date (
 -- ======================================================
 
 INSERT INTO dim_date (
+
     calendar_day,
+
     calendar_month,
+
     calendar_year,
+
+    month_name,
+
+    month_year_name,
+
+    month_year_key,
+
     is_workday,
+
     is_holiday
+
 )
 
 SELECT
@@ -177,21 +195,38 @@ SELECT
 
     EXTRACT(YEAR FROM calendar_day)::INTEGER AS calendar_year,
 
+    TRIM(TO_CHAR(calendar_day, 'Month')) AS month_name,
+
+    TO_CHAR(calendar_day, 'Mon/YY') AS month_year_name,
+
+    (
+        EXTRACT(YEAR FROM calendar_day)::INTEGER * 100
+        +
+        EXTRACT(MONTH FROM calendar_day)::INTEGER
+    ) AS month_year_key,
+
     CASE
+
         WHEN EXTRACT(ISODOW FROM calendar_day) BETWEEN 1 AND 5
-        THEN TRUE
+
+            THEN TRUE
+
         ELSE FALSE
+
     END AS is_workday,
 
     FALSE AS is_holiday
 
 FROM generate_series(
+
         DATE '2026-01-01',
         DATE '2026-12-31',
         INTERVAL '1 day'
+
      ) AS calendar_day
 
 ON CONFLICT (calendar_day)
+
 DO NOTHING;
 
 -- ======================================================
@@ -199,9 +234,13 @@ DO NOTHING;
 -- ======================================================
 
 UPDATE dim_date
+
 SET
+
     is_holiday = TRUE,
+
     is_workday = FALSE
+
 WHERE calendar_day IN (
 
     DATE '2026-01-01', -- New Year's Day
@@ -231,7 +270,11 @@ WHERE calendar_day IN (
 -- ======================================================
 
 CREATE INDEX IF NOT EXISTS idx_dim_date_month_year
+
 ON dim_date (
+
     calendar_year,
+
     calendar_month
+
 );
