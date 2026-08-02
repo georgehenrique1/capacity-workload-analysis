@@ -17,14 +17,14 @@ This document summarizes the main development milestones and architectural decis
   - Planning Engine
   - Analytics Layer
   - Power BI Report
-- Adopted a Snowflake-style model for the Planning Engine.
-- Kept reporting structures separate from calculation and business rule objects.
+- Adopted a Snowflake-style structure for the Planning Engine.
+- Kept reporting objects separate from calculation and business rule objects.
 - Created separate DBML diagrams for the physical model and processing flow.
 
 ## Planning Engine
 
 - Created the `planning_engine` PostgreSQL schema.
-- Implemented the following dimensions:
+- Implemented:
   - `dim_product_type`
   - `dim_production_stage`
   - `dim_combination`
@@ -32,21 +32,21 @@ This document summarizes the main development milestones and architectural decis
   - `dim_shift`
   - `dim_date`
 - Generated Product Type and Production Stage combinations using a cross join.
-- Created the 2026 calendar with workday and holiday information.
+- Created the 2026 calendar with workday, holiday and Power BI month-sorting attributes.
 
 ## Business Rules
 
-- Created `leadtime_rules` to calculate Internal Start Dates.
-- Created `routing_hours` to define Manned and Installed workload by Combination and Work Center.
+- Created `leadtime_rules` for Internal Start Date calculation.
+- Created `routing_hours` for Manned and Installed workload generation.
 - Added primary keys, foreign keys, unique constraints and validation checks.
-- Recalibrated Routing Hours to produce more realistic utilization scenarios.
+- Recalibrated Routing Hours to generate more realistic utilization and bottleneck scenarios.
 
 ## Input and Snapshot Management
 
 - Created `raw_masterplan` and `raw_roster`.
 - Added `reference_month` to preserve input versions.
 - Loaded Master Plan snapshots for January, April and June 2026.
-- Loaded Roster snapshots containing:
+- Loaded workforce snapshots containing:
   - 30 operators in January
   - 39 operators in April
   - 45 operators in June
@@ -60,30 +60,35 @@ The final strategy is:
 - Workload always uses the latest available Master Plan through `vw_latest_masterplan`.
 - Capacity uses the latest valid Roster for each analysis month through `vw_actual_roster`.
 
-This keeps workload aligned with the latest customer forecast while preserving workforce history.
+This keeps future workload aligned with the latest customer forecast while preserving historical workforce assumptions.
 
 ## Workload Engine
 
 - Created `vw_detailed_workload`.
 - Calculated Internal Start Date using Lead Time Rules.
-- Applied Routing Hours to generate workload for each Work Center.
+- Applied Routing Hours to generate workload by Work Center.
 - Preserved project-level workload traceability.
 - Created `vw_monthly_workload` at Analysis Month and Work Center level.
 
 ## Capacity Engine
 
 - Created `vw_detailed_capacity` at Analysis Month, Work Center and Shift level.
-- Calculated Manned Capacity using Headcount, Net Shift Hours, Efficiency and Workdays.
+- Calculated Manned Capacity using:
+  - Headcount
+  - Net Shift Hours
+  - Efficiency
+  - Workdays
 - Calculated Installed Capacity using Daily Installed Capacity and Calendar Days.
 - Created `vw_monthly_capacity` at Analysis Month and Work Center level.
 
 ## Analytics Layer
 
-- Created the `analytics` schema.
+- Created the `analytics` PostgreSQL schema.
 - Created `analytics.vw_capacity_workload`.
 - Combined Monthly Capacity and Monthly Workload by Analysis Month and Work Center.
 - Added Manned and Installed Capacity Gaps and Status indicators.
-- Preserved months without workload by treating missing workload values as zero.
+- Preserved months without workload through a left join.
+- Converted missing workload values to zero.
 
 ### KPI Calculation Revision
 
@@ -91,7 +96,7 @@ Utilization percentages were initially calculated in SQL.
 
 This approach was revised because pre-calculated percentages do not aggregate correctly when multiple months or Work Centers are selected.
 
-The utilization measures were moved to Power BI and are now calculated as:
+Utilization was moved to Power BI and is calculated as:
 
 ```text
 SUM(Required Hours)
@@ -99,55 +104,101 @@ SUM(Required Hours)
 SUM(Available Capacity)
 ```
 
-## Power BI Report
+This ensures that utilization responds correctly to the current report filter context.
+
+## Power BI Model
 
 - Connected Power BI to PostgreSQL using Import mode.
+- Imported the analytical and detailed calculation views.
 - Added shared Date, Work Center and Shift dimensions.
-- Added Month-Year display and sorting attributes to `dim_date`.
-- Created two report pages:
-  - Management Overview
-  - Operational Analysis
+- Added `month_year_name` and `month_year_key` to support chronological sorting.
+- Created DAX measures for:
+  - Manned Utilization
+  - Installed Utilization
+  - Latest Headcount
+  - Active Projects
+  - Total Project Workload
+  - Conditional utilization colors
 
-### Management Overview
+## Management Overview
 
-Implemented:
+Created the executive Capacity vs Workload page with:
 
 - Headcount KPI
-- Manned and Installed Capacity KPIs
+- Manned Capacity KPIs
+- Installed Capacity KPIs
 - Required Workload KPIs
 - Capacity Gaps
-- Utilization measures
-- Capacity vs Workload trends
-- Work Center utilization heatmaps
+- Context-aware Utilization measures
+- Monthly Manned Capacity vs Workload trend
+- Monthly Installed Capacity vs Workload trend
+- Manned Utilization heatmap by Work Center
+- Installed Utilization heatmap by Work Center
 - Conditional formatting for Gap and Utilization
 
-### Operational Analysis
+The page identifies when capacity constraints occur and whether they are related to labor or installed resources.
 
-Implemented:
+## Operational Analysis
 
+Created the operational detail page with:
+
+- Headcount
 - Active Projects
-- Required Manned and Installed Hours
+- Required Manned Hours
+- Required Installed Hours
 - Top Projects by Total Workload
+- Manned and Installed workload composition
 - Planned Projects table
-- Project-level Need Date and workload traceability
+- Project Need Dates
+- Project-level workload traceability
 
-## Current Status
+The page explains which projects are driving the workload and contributing to future capacity constraints.
+
+## Dashboard Design
+
+- Used a consistent corporate color palette.
+- Applied green, yellow and red thresholds to utilization KPIs and heatmaps.
+- Applied positive and negative formatting to Capacity Gaps.
+- Created navigation buttons between the two report pages.
+- Structured the report into:
+  - Management Overview
+  - Operational Analysis
+- Kept the report concise and focused on decision-making.
+
+## Documentation and Repository
+
+- Updated:
+  - Business Problem
+  - Solution Overview
+  - Data Model
+  - Business Rules
+  - KPI Definitions
+  - Development Log
+  - README
+- Added the Planning Engine physical and processing-flow diagrams.
+- Added Management Overview and Operational Analysis screenshots.
+- Added the final Power BI `.pbix` report.
+- Organized SQL scripts, source CSV files, documentation and images into dedicated folders.
+
+## Final Status
 
 Completed:
 
-- Business problem definition
-- Solution architecture
-- PostgreSQL Planning Engine
-- Snapshot management
-- Workload and Capacity engines
+- Business Problem Definition
+- Solution Architecture
+- PostgreSQL Physical Model
+- Planning Engine
+- Business Rules
+- Input and Snapshot Management
+- Workload Engine
+- Capacity Engine
 - Analytics Layer
-- DBML documentation
-- Power BI report
+- DBML Documentation
+- Power BI Data Model
+- Management Overview
+- Operational Analysis
+- Project Documentation
+- Dashboard Screenshots
+- Power BI Report
 
-Remaining:
-
-- Final README update
-- Dashboard screenshots
-- Repository cleanup
-- Final validation
-- Portfolio publication
+**Project Status: Completed**
