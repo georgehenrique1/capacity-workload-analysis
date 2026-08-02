@@ -2,66 +2,73 @@
 
 ## Context
 
-Manufacturing organizations must continuously balance future production demand against available production capacity.
+Manufacturing organizations need to balance future production demand against available labor and equipment capacity.
 
-As product complexity and project volume increase, planning activities become more challenging and require greater visibility across the manufacturing network.
-
-Many capacity planning processes are still maintained through spreadsheets, resulting in limited scalability, reduced traceability, and increased effort to evaluate future capacity requirements.
+As project volume and product complexity increase, spreadsheet-based planning becomes difficult to scale, maintain and audit. This limits visibility into future workload, capacity constraints and manufacturing bottlenecks.
 
 ---
 
 ## Problem Statement
 
-The objective of this project is to develop a centralized Capacity vs. Workload analytical solution capable of supporting medium- and long-term manufacturing planning decisions.
+The goal of this project is to build a centralized Capacity vs Workload solution using PostgreSQL and Power BI.
 
-The solution must provide visibility into future workload requirements and compare them against available manufacturing capacity over a 12-month planning horizon.
+The solution compares future manufacturing workload against two capacity dimensions:
 
-The analysis should enable planners and manufacturing leaders to proactively identify bottlenecks, overloaded resources, underutilized work centers, and potential capacity shortages before they impact customer deliveries.
+- Manned Capacity
+- Installed Capacity
+
+The analysis covers a 12-month planning horizon and supports tactical and strategic manufacturing decisions.
 
 ---
 
 ## Current Process
 
-The planning process starts with a customer Master Plan containing project requirements and target completion dates for multiple production stages.
+The planning process begins with a customer Master Plan containing project requirements, Product Types, Production Stages and Need Dates.
 
-Each project is associated with a Product Type and contains individual Need Dates for each Production Stage.
+Business rules are applied to determine:
 
-From this information, planners must determine:
+- When manufacturing activities should start
+- Which Work Centers will be impacted
+- How much manned and installed workload will be generated
+- Whether available capacity is sufficient to support future demand
 
-- When manufacturing activities must start internally
-- Which work centers will be impacted
-- How much workload will be generated
-- Whether sufficient capacity exists to support future demand
-
-The process is currently executed through spreadsheet-based calculations and manual analysis.
+The current spreadsheet-based process requires manual calculations and provides limited traceability and scalability.
 
 ---
 
 ## Planning Challenges
 
-The current process presents several challenges:
+The main challenges are:
 
-- Limited scalability
 - High dependency on manual calculations
-- Reduced traceability of planning decisions
-- Difficulty identifying future bottlenecks
-- Limited scenario analysis capability
-- Lack of centralized data management
-- Reduced visibility of long-term capacity utilization
+- Limited visibility into future capacity constraints
+- Difficulty identifying bottlenecks by month and Work Center
+- Limited workload traceability at project level
+- Lack of historical workforce tracking
+- Decentralized planning information
+
+---
+
+## Planning Assumptions
+
+Workload calculations always use the latest available Master Plan, ensuring that future demand reflects the most recent customer forecast.
+
+Capacity calculations preserve historical workforce assumptions. For each analysis month, the solution uses the latest Roster snapshot available up to that month.
+
+This allows the model to compare current demand expectations against the workforce capacity available throughout the planning horizon.
 
 ---
 
 ## Expected Business Outcomes
 
-The solution should provide answers to the following questions:
+The solution should answer:
 
-- Do we have sufficient capacity to support future demand?
+- Is available capacity sufficient to support future demand?
 - Which months present capacity shortages?
-- Which work centers are overloaded?
-- Which work centers are underutilized?
-- What is the projected utilization rate of labor capacity?
-- What is the projected utilization rate of installed capacity?
-- How does workload evolve over time?
-- How would alternative planning scenarios impact capacity utilization?
+- Which Work Centers are overloaded or underutilized?
+- Is the constraint related to Manned or Installed Capacity?
+- How do workload, capacity and headcount evolve over time?
+- Which projects are the main workload drivers?
+- Which projects contribute to future bottlenecks?
 
 The expected outcome is a more structured, scalable and data-driven manufacturing planning process.

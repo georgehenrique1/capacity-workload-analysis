@@ -2,11 +2,11 @@
 
 ## Solution Vision
 
-This project aims to replace spreadsheet-based capacity planning calculations with a centralized analytical solution built using PostgreSQL and Power BI.
+This project replaces spreadsheet-based capacity planning calculations with a centralized solution built using PostgreSQL and Power BI.
 
-The solution converts customer demand into manufacturing workload requirements and compares those requirements against available factory capacity over a 12-month planning horizon.
+The solution converts customer demand into manufacturing workload and compares it against Manned and Installed Capacity over a 12-month planning horizon.
 
-The goal is to provide visibility into future bottlenecks, capacity shortages, and workload distribution across the manufacturing network.
+Its purpose is to provide visibility into future capacity constraints, manufacturing bottlenecks and the projects driving workload demand.
 
 ---
 
@@ -26,144 +26,161 @@ The solution is divided into two layers.
 
 ### Planning Engine
 
-Responsible for processing business rules and generating workload and capacity calculations.
+The Planning Engine processes business rules and calculates workload and capacity.
 
 Main components:
 
-- Master Plan
-- Production Roster
+- Master Plan and Production Roster inputs
 - Lead Time Rules
 - Routing Matrix
+- Snapshot Control
 - Workload Engine
 - Capacity Engine
 
-Outputs:
+Main outputs:
 
-- Monthly Workload
-- Monthly Capacity
+- Detailed and Monthly Workload
+- Detailed and Monthly Capacity
 
 ### Analytics Layer
 
-Responsible for analytical consumption and reporting.
+The Analytics Layer consolidates monthly workload and capacity into a reporting view consumed by Power BI.
 
-This layer will follow a Star Schema design and will be used by Power BI for reporting and KPI calculation.
+The final analytical view provides:
+
+- Headcount
+- Required Manned and Installed Hours
+- Available Manned and Installed Capacity
+- Capacity Gaps
+- Capacity Status
+
+Utilization percentages are calculated as Power BI measures so they respond correctly to month and Work Center filters.
 
 ---
 
 ## High-Level Process Flow
 
-Customer Master Plan
-
-↓
-
-Internal Start Date Calculation
-
-↓
-
-Workload Generation
-
-↓
-
-Capacity Calculation
-
-↓
-
-Analytics Layer
-
-↓
-
-Power BI Dashboard
+```text
+Master Plan + Production Roster
+                ↓
+        Snapshot Selection
+                ↓
+     Workload and Capacity Engines
+                ↓
+      Capacity vs Workload View
+                ↓
+        Power BI Dashboard
+```
 
 ---
 
-## Input Data Sources
+## Input Data
 
 ### Master Plan
 
-Contains:
+Represents customer demand and contains:
 
 - Project Number
 - Project Name
-- Product Type
-- Production Stage
+- Product Type and Production Stage combination
 - Need Date
+- Reference Month
 
-The Master Plan represents future customer demand and serves as the starting point for all workload calculations.
+Workload calculations always use the latest available Master Plan.
 
 ### Production Roster
 
-Contains:
+Represents workforce allocation and contains:
 
 - Operator ID
 - Operator Name
 - Work Center
 - Shift
+- Reference Month
 
-Used to calculate available labor capacity.
+Roster snapshots are preserved so each analysis month uses the workforce assumptions available at that time.
 
 ---
 
-## Business Rules
+## Workload Calculation
 
-### Lead Time Rules
-
-Used to calculate the Internal Start Date for each project stage.
-
-Formula:
+The Internal Start Date determines when workload enters the planning horizon.
 
 ```text
 Internal Start Date = Need Date - Lead Time Days
 ```
 
-### Routing Matrix
+The Routing Matrix then defines the Manned and Installed Hours required by each Product Type, Production Stage and Work Center combination.
 
-Defines workload consumption for each combination of:
+Workload is available at two levels:
 
-- Product Type
-- Production Stage
-- Work Center
-
-The matrix stores:
-
-- Required Manned Hours
-- Required Installed Hours
+- Detailed by Project, Combination and Work Center
+- Monthly by Analysis Month and Work Center
 
 ---
 
-## Capacity Model
-
-The solution evaluates two independent capacity dimensions.
+## Capacity Calculation
 
 ### Manned Capacity
 
-Available labor hours based on workforce allocation, shift structure, working days and efficiency factors.
+Represents available labor hours based on:
+
+- Headcount
+- Shift work hours
+- Breaks
+- Efficiency
+- Working days
+
+```text
+Manned Capacity =
+Headcount × Net Shift Hours × Efficiency × Workdays
+```
 
 ### Installed Capacity
 
-Available machine hours based on installed factory capacity.
+Represents available equipment hours based on the daily installed capacity of each Work Center and the number of calendar days.
 
-For simplification purposes, all Work Centers use a fixed daily installed capacity.
+```text
+Installed Capacity =
+Daily Installed Capacity × Calendar Days
+```
 
----
-
-## Planning Horizon
-
-- 12 Months
-- Monthly Granularity
-
-The solution is intended for tactical and strategic planning, not detailed production scheduling.
+Capacity is calculated by Shift and then aggregated monthly by Work Center.
 
 ---
 
-## Expected Outputs
+## Power BI Report
 
-The solution will provide:
+The report contains two pages.
 
-- Capacity vs. Workload Analysis
-- Capacity Utilization Trends
-- Bottleneck Identification
-- Capacity Gap Analysis
-- Factory-Level Visibility
-- Work Center Analysis
-- Project-Level Workload Traceability
-- Scenario Comparison Capabilities
+### Management Overview
+
+Provides:
+
+- Manned and Installed Capacity KPIs
+- Required Workload
+- Capacity Gaps
+- Utilization
+- Monthly Capacity vs Workload trends
+- Work Center bottleneck heatmaps
+
+### Operational Analysis
+
+Provides:
+
+- Active Projects
+- Required Manned and Installed Hours
+- Top Projects by Total Workload
+- Planned Projects and Need Dates
+- Project-level workload traceability
+
+---
+
+## Planning Scope
+
+- 12-month planning horizon
+- Monthly analysis
+- Factory and Work Center visibility
+- Tactical and strategic planning
+
+The solution is not intended for daily production scheduling or shop-floor control.
