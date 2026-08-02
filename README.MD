@@ -14,7 +14,7 @@ The project replaces spreadsheet-based calculations with a structured Planning E
 
 ### Management Overview
 
-images/management_overview.png
+![image_alt](https://github.com/georgehenrique1/capacity-workload-analysis/blob/65d8c1e98d734166d0fef54b3157dfb63404a7ba/images/management_overview.png)
 
 The Management Overview provides:
 
