@@ -27,7 +27,7 @@ The Management Overview provides:
 
 ### Operational Analysis
 
-images/operational_analysis.png
+![image_alt](https://github.com/georgehenrique1/capacity-workload-analysis/blob/2fe256215732772c8ab01b783e5cbc48105c7132/images/operational_analysis.png)
 
 The Operational Analysis provides:
 
@@ -79,11 +79,11 @@ The final analytical layer supports:
 
 ### Planning Engine Physical Model
 
-images/planning_engine_physical_diagram.png
+![image_alt](https://github.com/georgehenrique1/capacity-workload-analysis/blob/2fe256215732772c8ab01b783e5cbc48105c7132/images/planning_engine_physical_diagram.png)
 
 ### Planning Engine Processing Flow
 
-images/planning_engine_flow.png
+![image_alt](https://github.com/georgehenrique1/capacity-workload-analysis/blob/2fe256215732772c8ab01b783e5cbc48105c7132/images/planning_engine_flow.png)
 
 ---
 
