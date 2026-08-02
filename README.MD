@@ -10,13 +10,42 @@ The project replaces spreadsheet-based calculations with a structured Planning E
 
 ---
 
+## Dashboard Preview
+
+### Management Overview
+
+images/management_overview.png
+
+The Management Overview provides:
+
+- Headcount and available capacity
+- Required Manned and Installed Hours
+- Capacity Gaps
+- Manned and Installed Utilization
+- Monthly Capacity vs Workload trends
+- Work Center bottleneck heatmaps
+
+### Operational Analysis
+
+images/operational_analysis.png
+
+The Operational Analysis provides:
+
+- Active Projects
+- Required Manned and Installed Workload
+- Top Projects by Total Workload
+- Planned Projects and Need Dates
+- Project-level workload traceability
+
+---
+
 ## Solution Architecture
 
 The solution is divided into two layers.
 
 ### Planning Engine
 
-Processes input snapshots, applies business rules and calculates workload and capacity.
+The Planning Engine processes input snapshots, applies business rules and calculates workload and capacity.
 
 Main components:
 
@@ -34,15 +63,27 @@ Main outputs:
 
 ### Analytics Layer
 
-Combines monthly workload and capacity into a reporting view consumed by Power BI.
+The Analytics Layer combines monthly workload and capacity into a reporting view consumed by Power BI.
 
 The final analytical layer supports:
 
 - Capacity vs Workload analysis
 - Manned and Installed Capacity analysis
-- Work Center bottleneck identification
 - Capacity Gap analysis
+- Work Center bottleneck identification
 - Project-level workload traceability
+
+---
+
+## Architecture Diagrams
+
+### Planning Engine Physical Model
+
+images/planning_engine_physical_diagram.png
+
+### Planning Engine Processing Flow
+
+images/planning_engine_flow.png
 
 ---
 
@@ -71,45 +112,71 @@ MAX(reference_month) <= analysis_month
 
 Manned and Installed Capacity are calculated and analyzed independently.
 
----
+### Utilization
 
-## Power BI Report
+Utilization is calculated in Power BI so that results respond correctly to Month and Work Center filters.
 
-The report contains two pages.
-
-### Management Overview
-
-Provides:
-
-- Headcount
-- Manned and Installed Capacity
-- Required Manned and Installed Hours
-- Capacity Gaps
-- Utilization KPIs
-- Monthly Capacity vs Workload trends
-- Work Center utilization heatmaps
-
-### Operational Analysis
-
-Provides:
-
-- Active Projects
-- Required Manned and Installed Workload
-- Top Projects by Total Workload
-- Planned Projects and Need Dates
-- Project-level workload traceability
+```text
+Utilization =
+SUM(Required Hours) / SUM(Available Capacity)
+```
 
 ---
 
-## Dashboard Preview
+## Data Flow
 
-### Management Overview
+### Workload
 
-powerbi/management_overview.png
+```text
+Raw Master Plan
+       ↓
+Latest Master Plan
+       ↓
+Lead Time and Routing Rules
+       ↓
+Detailed Workload
+       ↓
+Monthly Workload
+```
 
-### Operational Analysis
+### Capacity
 
-powerbi/operational_analysis.png
+```text
+Raw Roster
+       ↓
+Historical Roster Selection
+       ↓
+Detailed Capacity
+       ↓
+Monthly Capacity
+```
+
+### Reporting
+
+```text
+Monthly Workload
+        +
+Monthly Capacity
+        ↓
+Capacity vs Workload Analytics View
+        ↓
+Power BI Report
+```
+
+---
+
+## Key Features
+
+- Capacity vs Workload Analysis
+- Manned Capacity Calculation
+- Installed Capacity Calculation
+- Historical Workforce Snapshots
+- Latest Master Plan Forecast
+- Internal Start Date Calculation
+- Capacity Gap Analysis
+- Work Center Bottleneck Identification
+- Project-Level Workload Traceability
+- Context-aware utilization measures in Power BI
 
 ---
 
@@ -137,12 +204,11 @@ CAPACITY_WORKLOAD_ANALYSIS/
 │   ├── 05_kpis.md
 │   └── 06_development_log.md
 ├── images/
+│   ├── management_overview.png
+│   ├── operational_analysis.png
 │   ├── planning_engine_flow.png
 │   └── planning_engine_physical_diagram.png
 ├── powerbi/
-│   ├── capacity_workload_analysis.pbix
-│   ├── management_overview.png
-│   └── operational_analysis.png
 ├── sql/
 │   ├── 01_data/
 │   │   ├── history_raw_masterplan/
@@ -162,29 +228,14 @@ CAPACITY_WORKLOAD_ANALYSIS/
 │   │   └── 06_workload_capacity_engine.sql
 │   └── 03_analytics/
 │       └── 07_capacity_vs_workload.sql
-└── README.md
+└── README.MD
 ```
-
----
-
-## Key Features
-
-- Capacity vs Workload Analysis
-- Manned Capacity Calculation
-- Installed Capacity Calculation
-- Historical Workforce Snapshots
-- Latest Master Plan Forecast
-- Internal Start Date Calculation
-- Capacity Gap Analysis
-- Work Center Bottleneck Identification
-- Project-Level Workload Traceability
-- Context-aware utilization measures in Power BI
 
 ---
 
 ## Documentation
 
-Additional project documentation is available in the docs/ folder:
+Detailed project documentation is available in the `docs/` folder:
 
 - docs/01_business_problem.md
 - docs/02_solution_overview.md
@@ -197,15 +248,15 @@ Additional project documentation is available in the docs/ folder:
 
 ## Project Status
 
-✅ Business Problem Definition  
-✅ Solution Architecture  
-✅ PostgreSQL Physical Model  
-✅ Planning Engine  
-✅ Snapshot Control  
-✅ Workload and Capacity Engines  
-✅ Analytics Layer  
-✅ DBML Documentation  
-✅ Power BI Dashboard  
-✅ Project Documentation  
+- ✅ Business Problem Definition
+- ✅ Solution Architecture
+- ✅ PostgreSQL Physical Model
+- ✅ Planning Engine
+- ✅ Snapshot Control
+- ✅ Workload and Capacity Engines
+- ✅ Analytics Layer
+- ✅ Architecture Documentation
+- ✅ Power BI Dashboard
+- ✅ Project Documentation
 
 **Status: Completed**
